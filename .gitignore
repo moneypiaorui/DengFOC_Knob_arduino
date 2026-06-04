@@ -1,0 +1,11 @@
+# Libraries
+libraries/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+*.swp
+*.swo

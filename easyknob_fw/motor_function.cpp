@@ -2,7 +2,7 @@
 #include "OneButton.h"
 #include "DFOC_RGB.h"
 #include "DengFOC.h"
-#include "gripper_control.h"
+#include "easyknob_control.h"
 
 OneButton button(BUTTON1, true, true);
 DFOC_RGB   RGB = DFOC_RGB();

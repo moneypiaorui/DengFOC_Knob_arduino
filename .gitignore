@@ -1,16 +1,26 @@
-# Libraries
+# ── Libraries ────────────────────────────────────────────────
 libraries/
 
-# Python / uv
+# ── Python ──────────────────────────────────────────────────
 .venv/
 __pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
 
-# PlatformIO
+# ── PlatformIO ──────────────────────────────────────────────
 .pio/
+
+# ── IDE / Editor ────────────────────────────────────────────
 .vscode/
+.idea/
 *.swp
 *.swo
+*~
 
-# OS
+# ── OS ──────────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+desktop.ini

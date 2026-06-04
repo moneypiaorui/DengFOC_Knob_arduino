@@ -1,0 +1,20 @@
+[project]
+name = "easyknob-examples"
+version = "0.1.0"
+description = "Example scripts for EasyKnob"
+requires-python = ">=3.10"
+dependencies = [
+    "easyknob",
+    "pyserial>=3.5",
+]
+
+[project.scripts]
+easyknob-demo = "realman_gripper_demo:main"
+easyknob-basic = "basic_demo:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["realman_gripper_demo", "basic_demo"]

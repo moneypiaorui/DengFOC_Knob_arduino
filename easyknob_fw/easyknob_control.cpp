@@ -1,4 +1,4 @@
-#include "gripper_control.h"
+#include "easyknob_control.h"
 #include "DengFOC.h"
 #include "DFOC_RGB.h"
 

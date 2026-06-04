@@ -1,5 +1,5 @@
-#ifndef GRIPPER_PROTOCOL_H
-#define GRIPPER_PROTOCOL_H
+#ifndef EASYKNOB_PROTOCOL_H
+#define EASYKNOB_PROTOCOL_H
 
 #include <Arduino.h>
 

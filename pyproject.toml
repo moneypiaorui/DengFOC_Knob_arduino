@@ -1,8 +1,20 @@
 [project]
-name = "dengfoc-knob-arduino"
+name = "easyknob-root"
 version = "0.1.0"
-description = "Add your description here"
-requires-python = ">=3.12"
+description = "EasyKnob - force feedback knob for EasyTeleop"
+requires-python = ">=3.10"
 dependencies = [
     "platformio>=6.1.19",
+    "pyserial>=3.5",
+    "easyknob",
+    "easyknob-gui",
+    "easyknob-examples",
 ]
+
+[tool.uv.workspace]
+members = ["easyknob_sdk", "easyknob_gui", "easyknob_examples"]
+
+[tool.uv.sources]
+easyknob = { workspace = true }
+easyknob-gui = { workspace = true }
+easyknob-examples = { workspace = true }

@@ -4,8 +4,8 @@
 #include "DengFOC.h"
 #include "DFOC_RGB.h"
 #include "motor_function.h"
-#include "gripper_protocol.h"
-#include "gripper_control.h"
+#include "easyknob_protocol.h"
+#include "easyknob_control.h"
 
 int Sensor_DIR = 1;
 int Motor_PP   = 7;

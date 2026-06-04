@@ -1,8 +1,8 @@
-#ifndef GRIPPER_CONTROL_H
-#define GRIPPER_CONTROL_H
+#ifndef EASYKNOB_CONTROL_H
+#define EASYKNOB_CONTROL_H
 
 #include <Arduino.h>
-#include "gripper_protocol.h"
+#include "easyknob_protocol.h"
 
 typedef enum {
     GRIP_IDLE = 0,

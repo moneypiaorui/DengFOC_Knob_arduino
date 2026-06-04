@@ -1,4 +1,4 @@
-#include "gripper_protocol.h"
+#include "easyknob_protocol.h"
 
 uint16_t proto_crc16(const uint8_t* data, size_t len) {
     uint16_t crc = 0xFFFF;

@@ -46,5 +46,5 @@ class Command:
     force: float = 0.0              # Current force in Newtons
     force_threshold: float = 0.5    # Threshold to activate feedback (N)
     feedback_gain: float = 5.0      # Torque gain factor
-    mode_cmd: int = 0               # 0=nop, 1=gripper, 2=calibrate, 3=idle
+    mode_cmd: int = 0               # 0=nop, 1=gripper, 2=calibrate, 3=idle, 4=save cfg
     damping: float = 0.0            # Damping factor 0.0~1.0 (0=free, 1=max)

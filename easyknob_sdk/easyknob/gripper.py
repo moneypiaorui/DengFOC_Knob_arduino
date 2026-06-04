@@ -151,6 +151,10 @@ class EasyKnob:
         cmd = Command(damping=damping)
         self._send_cmd(cmd)
 
+    def save_config(self):
+        """Persist current settings to NVS (survives power cycle)."""
+        self._send_cmd(Command(mode_cmd=4))
+
     def calibrate(self):
         """Send calibrate command (sets zero angle from current position)."""
         cmd = Command(mode_cmd=2)

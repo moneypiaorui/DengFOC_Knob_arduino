@@ -1,4 +1,5 @@
 #include "easyknob_control.h"
+#include "easyknob_config.h"
 #include "DengFOC.h"
 #include "DFOC_RGB.h"
 
@@ -20,8 +21,18 @@ static uint8_t  rgb_bright = 0;
 static int      rgb_dir = 1;
 
 void gripper_init() {
+    ek_cfg_init();
+    ek_cfg_load();
+
+    cmd_damping         = ek_cfg_get_damping() / 100.0f;
+    cmd_force_threshold = ek_cfg_get_force_threshold() / 100.0f;
+    cmd_feedback_gain   = ek_cfg_get_feedback_gain() / 100.0f;
+    grip_zero_angle     = ek_cfg_get_zero_angle();
+    grip_range_half     = ek_cfg_get_range_half() / 100.0f;
+
+    grip_min_angle = grip_zero_angle - grip_range_half;
+    grip_max_angle = grip_zero_angle + grip_range_half;
     grip_mode = GRIP_IDLE;
-    grip_zero_angle = 0.0f;
 }
 
 void gripper_set_mode(GripperMode m) {
@@ -32,6 +43,8 @@ void gripper_calibrate_zero() {
     grip_zero_angle = DFOC_M0_Angle();
     grip_min_angle  = grip_zero_angle - grip_range_half;
     grip_max_angle  = grip_zero_angle + grip_range_half;
+    ek_cfg_set_zero_angle(grip_zero_angle);
+    ek_cfg_save();  // immediate save on calibration
     grip_mode = GRIP_ACTIVE;
 }
 
@@ -54,13 +67,23 @@ void gripper_loop(const CommandPacket* cmd) {
         cmd_force           = cmd->force / 100.0f;
         cmd_force_threshold = cmd->force_threshold / 100.0f;
         cmd_feedback_gain   = cmd->feedback_gain / 100.0f;
-        cmd_damping         = cmd->damping / 100.0f;       // 0-100 -> 0.0-1.0
+        cmd_damping         = cmd->damping / 100.0f;
+
+        // Persist changed params
+        ek_cfg_set_damping(cmd->damping);
+        ek_cfg_set_force_threshold(cmd->force_threshold);
+        ek_cfg_set_feedback_gain(cmd->feedback_gain);
+
         switch (cmd->mode_cmd) {
         case 1: grip_mode = GRIP_ACTIVE; break;
         case 2: gripper_calibrate_zero(); break;
         case 3: grip_mode = GRIP_IDLE; break;
+        case 4: ek_cfg_save(); break;   // force save all
         }
     }
+
+    // Debounced auto-save
+    ek_cfg_save_debounced();
 
     switch (grip_mode) {
     case GRIP_IDLE:

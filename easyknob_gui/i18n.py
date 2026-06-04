@@ -90,6 +90,8 @@ _STRINGS = {
         "settings.gain.help": "增益越高，相同外力下旋钮的反力矩越大。\n范围 0~50，默认 5.0。",
         "settings.threshold": "力阈值 (N):",
         "settings.threshold.help": "外力低于此阈值时不触发力反馈，旋钮低摩擦自由旋转。\n范围 0~10N，默认 0.5N。",
+        "settings.damping": "阻尼:",
+        "settings.damping.help": "速度阻尼系数。0=完全自由旋转（无阻力），1=最大阻尼。\n默认 0，值越大转动阻力越大。",
 
         # ── Status bar ──
         "status.packets": "数据包: {count}",
@@ -147,6 +149,8 @@ _STRINGS = {
         "settings.gain.help": "Higher gain = stronger counter-torque for the same external force.\nRange: 0~50, default: 5.0.",
         "settings.threshold": "Force Threshold (N):",
         "settings.threshold.help": "Forces below this value do not activate feedback — the knob spins freely.\nRange: 0~10 N, default: 0.5 N.",
+        "settings.damping": "Damping:",
+        "settings.damping.help": "Velocity damping factor. 0 = completely free spin (no resistance), 1 = max damping.\nDefault: 0. Higher values = more resistance when turning.",
 
         # ── Status bar ──
         "status.packets": "Packets: {count}",

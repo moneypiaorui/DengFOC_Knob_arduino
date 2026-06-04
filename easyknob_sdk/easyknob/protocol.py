@@ -27,23 +27,28 @@ def crc16_ccitt(data: bytes) -> int:
 
 
 def encode_command(cmd: Command, seq: int = 0) -> bytes:
-    """Encode a Command into a binary frame."""
+    """Encode a Command into a binary frame.
+
+    Frame: AA 55 LEN SEQ CMD PAYLOAD CRC16
+    """
     payload = struct.pack(
-        '<hHHB',
+        '<hHHBB',
         int(cmd.force * 100),
         int(cmd.force_threshold * 100),
         int(cmd.feedback_gain * 100),
         cmd.mode_cmd & 0xFF,
+        int(cmd.damping * 100) & 0xFF,
     )
-    header = struct.pack('BBBB', SYNC1, SYNC2, len(payload), seq & 0xFF)
-    # seq byte + cmd byte
-    crc = crc16_ccitt(struct.pack('B', seq & 0xFF) + bytes([CMD_COMMAND]) + payload)
-    return header + bytes([seq & 0xFF, CMD_COMMAND]) + payload + struct.pack('<H', crc)
+    header = struct.pack('BBBBB', SYNC1, SYNC2, len(payload),
+                         seq & 0xFF, CMD_COMMAND)
+    crc = crc16_ccitt(payload)
+    return header + payload + struct.pack('<H', crc)
 
 
 def encode_ping(seq: int = 0) -> bytes:
-    """Encode a ping frame."""
-    header = struct.pack('BBBB', SYNC1, SYNC2, 0, seq & 0xFF)
+    """Encode a ping frame. Frame: AA 55 00 SEQ CMD_PING CRC16"""
+    header = struct.pack('BBBBB', SYNC1, SYNC2, 0, seq & 0xFF, CMD_PING)
+    return header + struct.pack('<H', crc16_ccitt(b''))
     crc = crc16_ccitt(struct.pack('BB', seq & 0xFF, CMD_PING))
     return header + bytes([seq & 0xFF, CMD_PING]) + struct.pack('<H', crc)
 

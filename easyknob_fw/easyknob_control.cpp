@@ -14,6 +14,7 @@ float       grip_torque_applied = 0.0f;
 static float cmd_force           = 0.0f;
 static float cmd_force_threshold = 0.5f;
 static float cmd_feedback_gain   = 5.0f;
+static float cmd_damping         = 0.0f;
 static uint32_t rgb_last_ms = 0;
 static uint8_t  rgb_bright = 0;
 static int      rgb_dir = 1;
@@ -53,6 +54,7 @@ void gripper_loop(const CommandPacket* cmd) {
         cmd_force           = cmd->force / 100.0f;
         cmd_force_threshold = cmd->force_threshold / 100.0f;
         cmd_feedback_gain   = cmd->feedback_gain / 100.0f;
+        cmd_damping         = cmd->damping / 100.0f;       // 0-100 -> 0.0-1.0
         switch (cmd->mode_cmd) {
         case 1: grip_mode = GRIP_ACTIVE; break;
         case 2: gripper_calibrate_zero(); break;
@@ -62,7 +64,7 @@ void gripper_loop(const CommandPacket* cmd) {
 
     switch (grip_mode) {
     case GRIP_IDLE:
-        grip_torque_applied = -0.3f * vel;
+        grip_torque_applied = -cmd_damping * vel;
         break;
     case GRIP_CALIBRATE:
         DFOC_M0_set_Force_Angle(grip_zero_angle);
@@ -70,7 +72,7 @@ void gripper_loop(const CommandPacket* cmd) {
         return;
     case GRIP_ACTIVE:
         if (fabsf(cmd_force) < cmd_force_threshold) {
-            grip_torque_applied = -0.5f * vel;
+            grip_torque_applied = -cmd_damping * vel;
         } else {
             grip_torque_applied = constrain(-cmd_feedback_gain * cmd_force, -6.0f, 6.0f);
         }

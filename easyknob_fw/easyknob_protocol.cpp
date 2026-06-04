@@ -85,11 +85,12 @@ bool proto_poll_command(CommandPacket* cmd) {
             uint16_t rx_crc = rx_crc_lo | ((uint16_t)b << 8);
             uint16_t calc = proto_crc16(rx_buf, rx_plen);
             rx_reset();
-            if (rx_crc == calc && rx_cmd == CMD_COMMAND && rx_plen == 7) {
+            if (rx_crc == calc && rx_cmd == CMD_COMMAND && rx_plen == 8) {
                 cmd->force           = (int16_t)(rx_buf[0] | (rx_buf[1] << 8));
                 cmd->force_threshold = (uint16_t)(rx_buf[2] | (rx_buf[3] << 8));
                 cmd->feedback_gain   = (uint16_t)(rx_buf[4] | (rx_buf[5] << 8));
                 cmd->mode_cmd        = rx_buf[6];
+                cmd->damping         = rx_buf[7];
                 return true;
             }
             break;

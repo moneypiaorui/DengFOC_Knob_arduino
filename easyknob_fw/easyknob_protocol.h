@@ -29,6 +29,7 @@ struct CommandPacket {
     uint16_t force_threshold;
     uint16_t feedback_gain;
     uint8_t  mode_cmd;
+    uint8_t  damping;   // 0-100, scaled x1
 };
 
 void proto_init();

@@ -67,6 +67,7 @@ class EasyKnobGUI:
         self._port_var = tk.StringVar(value='COM12')
         self._gain_var = tk.DoubleVar(value=5.0)
         self._threshold_var = tk.DoubleVar(value=0.5)
+        self._damping_var = tk.DoubleVar(value=0.0)
         self._simulate_force = tk.DoubleVar(value=0.0)
         self._lang_var = tk.StringVar(value=get_language())
 
@@ -227,6 +228,14 @@ class EasyKnobGUI:
         self._threshold_label = ttk.Label(ctrl, text="0.50")
         self._threshold_label.pack()
 
+        damp_lbl = ttk.Label(ctrl, text=tr("settings.damping"))
+        damp_lbl.pack(anchor='w')
+        ToolTip(damp_lbl, tr_help("settings.damping.help"))
+        ttk.Scale(ctrl, from_=0, to=100, variable=self._damping_var,
+                  command=lambda v: self._on_damping_change()).pack(fill=tk.X)
+        self._damping_label = ttk.Label(ctrl, text="0.00")
+        self._damping_label.pack()
+
         # ── Bottom status bar ──
         bottom = ttk.Frame(self.root, padding=2)
         bottom.pack(fill=tk.X, side=tk.BOTTOM)
@@ -317,11 +326,13 @@ class EasyKnobGUI:
         if not self._connected or not self.knob:
             return
         try:
-            force = self._simulate_force.get()
-            gain = self._gain_var.get()
-            threshold = self._threshold_var.get()
-            self.knob.send_command(Command(
-                force=force, feedback_gain=gain, force_threshold=threshold))
+            cmd = Command(
+                force=self._simulate_force.get(),
+                feedback_gain=self._gain_var.get(),
+                force_threshold=self._threshold_var.get(),
+                damping=self._damping_var.get() / 100.0,
+            )
+            self.knob.send_command(cmd)
         except Exception:
             pass
         self.root.after(20, self._tx_loop)
@@ -334,6 +345,9 @@ class EasyKnobGUI:
 
     def _on_threshold_change(self):
         self._threshold_label.config(text=f"{self._threshold_var.get():.2f}")
+
+    def _on_damping_change(self):
+        self._damping_label.config(text=f"{self._damping_var.get() / 100.0:.2f}")
 
     def _set_mode(self, mode: int):
         if self.knob:

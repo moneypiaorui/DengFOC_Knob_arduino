@@ -146,6 +146,11 @@ class EasyKnob:
         cmd = Command(mode_cmd=mode)
         self._send_cmd(cmd)
 
+    def set_damping(self, damping: float):
+        """Set velocity damping factor (0.0=free spin, 1.0=max damping)."""
+        cmd = Command(damping=damping)
+        self._send_cmd(cmd)
+
     def calibrate(self):
         """Send calibrate command (sets zero angle from current position)."""
         cmd = Command(mode_cmd=2)

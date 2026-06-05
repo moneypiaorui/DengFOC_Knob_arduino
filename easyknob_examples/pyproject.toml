@@ -6,6 +6,7 @@ requires-python = ">=3.10"
 dependencies = [
     "easyknob",
     "pyserial>=3.5",
+    "robotic-arm",
 ]
 
 [project.scripts]
